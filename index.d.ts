@@ -12,6 +12,7 @@ export class IdosellApplicationDriver {
     getLicenses(): Promise<IdosellApplicationResponse>
     getSingedResponse(): IdosellApplicationResponse
     getSingedRedirectResponse(url: string): IdosellApplicationLaunchResponse
+    decryptIdosellKey(encryptedKey: string): string
 }
 
 export interface IdosellApplicationIncomingRequest {
