@@ -1,5 +1,5 @@
 import crypto, { BinaryLike, CipherKey } from 'crypto';
-import { IdosellAplicationConfig, IdosellApplicationGetLicencesRequest, IdosellApplicationIncomingRequest, IdosellApplicationInstallationRequest, IdosellApplicationLaunchResponse, IdosellApplicationResponse } from '.';
+import { IdosellAplicationConfig, IdosellAplicationLicenseRespose, IdosellApplicationGetLicencesRequest, IdosellApplicationIncomingRequest, IdosellApplicationInstallationRequest, IdosellApplicationLaunchResponse, IdosellApplicationResponse } from '.';
 
 const PATHS = {
     INSTALLATION_DONE: 'https://apps.idosell.com/api/application/installation/done',
@@ -64,7 +64,7 @@ export class IdosellApplicationDriver {
         return fetchResponse.json() as Promise<IdosellApplicationResponse>;
     }
 
-    async getLicenses(): Promise<IdosellApplicationResponse> {
+    async getLicenses(apiLicense: string|null = null, active: boolean|null = null): Promise<IdosellAplicationLicenseRespose> {
         if (!this.configs) {
             throw new Error('Configs not found');
         }
@@ -74,8 +74,10 @@ export class IdosellApplicationDriver {
             developer: this.configs.developerId,
             sign: this.generateSign()
         }
+        if (apiLicense !== null) request.api_license = apiLicense;
+        if (active !== null) request.active = active;
 
-        const fetchResponse = await fetch(PATHS.INSTALLATION_DONE, {
+        const fetchResponse = await fetch(PATHS.GET_LICENCES, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -83,7 +85,7 @@ export class IdosellApplicationDriver {
             body: JSON.stringify(request)
         });
 
-        return fetchResponse.json() as Promise<IdosellApplicationResponse>;
+        return fetchResponse.json() as Promise<IdosellAplicationLicenseRespose>;
     }
 
     getSingedResponse(): IdosellApplicationResponse {
