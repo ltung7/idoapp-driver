@@ -2,8 +2,8 @@
     "name": "idoapp-driver",
     "version": "0.0.1",
     "description": "A Idosell application plugin",
-    "main": "src/index.ts",
-    "types": "src/index.d.ts",
+    "main": "index.ts",
+    "types": "index.d.ts",
     "scripts": {
         "build": "tsc",
         "test": "jest",

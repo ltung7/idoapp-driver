@@ -1,6 +1,22 @@
+export interface IdosellAplicationConfig {
+    applicationId: number,
+    applicationKey: string;
+    developerId: string;
+    iv?: string;
+} 
+
+export class IdosellApplicationDriver { 
+    constructor(configs: IdosellAplicationConfig)
+    generateSign()
+    signalInstallationDone(data: IdosellApplicationIncomingRequest): Promise<IdosellApplicationResponse>
+    getLicenses(): Promise<IdosellApplicationResponse>
+    getSingedResponse(): IdosellApplicationResponse
+    getSingedRedirectResponse(url: string): IdosellApplicationLaunchResponse
+}
+
 export interface IdosellApplicationIncomingRequest {
     api_license: string; //license number
-    application_id: int; // application id
+    application_id: number; // application id
     sign: string; // communication signature
 }
 
@@ -9,12 +25,12 @@ export interface IdosellApplicationInstallationRequest extends IdosellApplicatio
 }
 
 export interface IdosellApplicationDisableRequest extends IdosellApplicationIncomingRequest {
-    client_id: int; //client id
+    client_id: number; //client id
     api_url: string; //address to api admin
 }
 
 export interface IdosellApplicationLaunchRequest {
-    client_id: int; //client number
+    client_id: number; //client number
     api_key: string; //access key
     api_license: string; //license number
     authorization_type: string; //authorization type (enum: “key”, “OAuth”)
@@ -36,7 +52,7 @@ export interface IdosellApplicationLaunchResponse extends IdosellApplicationResp
 }
 
 export interface IdosellApplicationGetLicencesRequest {
-    application_id: string,
+    application_id: number,
     developer: string,
     sign: string
 }

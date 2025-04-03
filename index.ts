@@ -1,6 +1,5 @@
-import { IdosellAplicationConfig } from "./types";
-import { IdosellApplicationGetLicencesRequest, IdosellApplicationIncomingRequest, IdosellApplicationInstallationRequest, IdosellApplicationResponse } from "./types/requests";
 import crypto from 'crypto';
+import { IdosellAplicationConfig, IdosellApplicationGetLicencesRequest, IdosellApplicationIncomingRequest, IdosellApplicationInstallationRequest, IdosellApplicationLaunchResponse, IdosellApplicationResponse } from '.';
 
 const PATHS = {
     INSTALLATION_DONE: 'https://apps.idosell.com/api/application/installation/done',
@@ -66,5 +65,20 @@ export class IdosellApplicationDriver {
         });
 
         return fetchResponse.json() as Promise<IdosellApplicationResponse>;
+    }
+
+    getSingedResponse(): IdosellApplicationResponse {
+        return {
+            status: 'ok',
+            sign: this.generateSign()
+        }
+    }
+
+    getSingedRedirectResponse(url: string): IdosellApplicationLaunchResponse {
+        return {
+            status: 'ok',
+            sign: this.generateSign(),
+            redirect: url
+        }
     }
 }
