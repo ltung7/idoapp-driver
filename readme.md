@@ -12,12 +12,23 @@ This plugin simplifies handling incoming requests from IdoSell Apps and respondi
 ## 📦 Installation
 Install via npm:
 ```sh
-npm install idosell-apps-connector
+npm install idoapp-driver
 ```
 
-## Usage 
+## 📖 Usage 
+
+Any Idosell application is required to enable for endpoints: 
+* Enabling the application - this is sent when a new client installs yout app in their panel
+* Launching the application - this is sent every time client wants to access your application through their panel
+* Disabling the application - this is sent when client uninstalls your app in their panel
+* Modifying the license - this is sent when client modifies their license in their panel
 
 ### Enabling the license
+
+This initial request sends basic information about the client as well as their url and apiKey in encrypted form. Your App key is used to decrypt the api key. Store safely that data to make API calls later.
+
+Also, as a requirement, developer is supposed to send a signal when installation is done to a designated endpoint.
+
 ```js
 import { IdosellApplicationDriver } from "idoapp-driver";
 
@@ -42,6 +53,10 @@ const enableLicense = (data) => {
 ```
 
 ### Lanching the application
+
+This request sends basic information about the client every time when they click on your app in their panel. Developer is supposed to generate and return an url to the working application. For example:
+```https://my.server.com/app/123456/``` where 123456 is the client id.
+
 ```js
 import { IdosellApplicationDriver } from "idoapp-driver";
 
@@ -61,6 +76,9 @@ const launchApplication = (data) => {
 ```
 
 ### Modify / revoke license
+
+Clients may want to calcel of modify the license. This is when next request is sent.
+
 ```js
 import { IdosellApplicationDriver } from "idoapp-driver";
 
@@ -79,6 +97,9 @@ const modifyLicense = (data) => {
 ```
 
 ### Get License Data
+
+This method allows you to query all the licenses of the application.
+
 ```js
 import { IdosellApplicationDriver } from "idoapp-driver";
 
